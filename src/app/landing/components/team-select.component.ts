@@ -46,7 +46,6 @@ export class TeamSelectComponent {
   @Input() set carouselItems(items: any[]) {
     this.carItems = items;
     if (items) this.slideChange.emit(items[0]);
-    console.log(this.carItems);
   }
 
   @Input() template!: TemplateRef<any>;

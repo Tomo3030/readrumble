@@ -42,6 +42,10 @@ import { ActivatedRoute, Router } from '@angular/router';
               {{ user()?.displayName }}
             </div>
 
+            <button appButton appRipple (click)="continueToGame()">
+              Continue
+            </button>
+
             <div class=" text-center mt-4 border-t w-full pt-4">
               <div class="">not {{ user()?.displayName }}?</div>
               <button (click)="logout()" class="underline">
@@ -90,6 +94,11 @@ export class EnterNamePageComponent {
     this.name = '';
     this.auth.logOut();
   }
+  continueToGame() {
+    this.router.navigate(['join'], {
+      relativeTo: this.route,
+    });
+  }
 
   private signInAnonymously() {
     this.auth
@@ -119,11 +128,5 @@ export class EnterNamePageComponent {
       .finally(() => {
         this.spinner.hide();
       });
-  }
-
-  private continueToGame() {
-    this.router.navigate(['join'], {
-      relativeTo: this.route,
-    });
   }
 }
