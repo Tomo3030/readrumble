@@ -52,20 +52,12 @@ export class TeamSelectComponent {
   @Output() slideChange = new EventEmitter();
 
   nextSlide() {
-    if (this.currentSlide === this.carItems.length - 1) return;
-    this.currentSlide++;
-    setTimeout(() => {
-      this.slideChange.emit(this.carItems[this.currentSlide]);
-      this.currentDisplay = this.currentSlide;
-    }, 200);
+    if (this.currentSlide >= this.carItems.length - 1) this.currentSlide = 0;
+    else this.currentSlide++;
   }
 
   prevSlide() {
-    if (this.currentSlide === 0) return;
-    this.currentSlide--;
-    setTimeout(() => {
-      this.slideChange.emit(this.carItems[this.currentSlide]);
-      this.currentDisplay = this.currentSlide;
-    }, 200);
+    if (this.currentSlide === 0) this.currentSlide = this.carItems.length - 1;
+    else this.currentSlide--;
   }
 }

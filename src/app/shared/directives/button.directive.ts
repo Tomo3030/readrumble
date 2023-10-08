@@ -9,7 +9,6 @@ export class ButtonDirective implements OnInit {
   @Input() color = 'bg-primary';
 
   constructor(private el: ElementRef, private renderer: Renderer2) {
-    console.log(this.color);
     const classes = [
       'w-full',
       'h-full',
@@ -29,7 +28,6 @@ export class ButtonDirective implements OnInit {
       'disabled:text-[#A8A8A8]',
     ];
     const bg = getComputedStyle(this.el.nativeElement).backgroundColor;
-    console.log(bg);
 
     classes.forEach((c) => this.renderer.addClass(this.el.nativeElement, c));
   }
