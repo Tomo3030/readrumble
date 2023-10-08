@@ -91,7 +91,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
                 class="text-card-text relative overflow-hidden bg-white border border-slate-300 w-full rounded px-3 py-2  focus:ring-primary focus:border-primary"
               >
                 <div>
-                  <img src="assets/icons/google.svg" class="inline mr-6" />
+                  <img src="assets/logos/google.svg" class="inline mr-6" />
                   <span class="text-sm">Continue With Google</span>
                 </div>
               </button>
@@ -111,7 +111,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
       <ng-template #returnUser>
         <app-card class="w-96 m-auto">
           <div content class="flex flex-col items-center gap-4">
-            <img src="assets/fist.svg" alt="" class=" h-[64px]" />
+            <img src="assets/logos/fist.svg" alt="" />
             <div class=" text-2xl mb-">Welcome Back</div>
             <div class="text-3xl font-bold mb-4 ">
               {{ user()?.email }}

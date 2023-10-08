@@ -36,7 +36,7 @@ import { ActivatedRoute, Router } from '@angular/router';
       <ng-template #signedIn>
         <app-card class="w-96 m-auto">
           <div content class="flex flex-col items-center gap-4">
-            <img src="assets/fist.svg" alt="" />
+            <img src="assets/logos/fist.svg" alt="" />
             <div class=" text-2xl mb-">Welcome Back</div>
             <div class="text-4xl font-bold ">
               {{ user()?.displayName }}

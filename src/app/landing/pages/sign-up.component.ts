@@ -93,7 +93,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
               class="text-card-text bg-white border border-slate-300 w-full rounded px-3 py-2  focus:ring-primary focus:border-primary"
             >
               <div>
-                <img src="assets/icons/google.svg" class="inline mr-6" />
+                <img src="assets/logos/google.svg" class="inline mr-6" />
                 <span class="text-sm">Continue With Google</span>
               </div>
             </button>
