@@ -1,0 +1,48 @@
+<svg
+    id="patternId"
+    width="100%"
+    height="100%"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <pattern
+        id="a"
+        patternUnits="userSpaceOnUse"
+        width="65.5"
+        height="55.2"
+        patternTransform="scale(4) rotate(40)"
+      >
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          fill="hsla(9, 85%, 65%, 1)"
+        />
+        <path
+          d="m4.6 6.7 28.1 22 28.1-22L52.4.2l-19.7 15L13 .2z"
+          stroke-width="1"
+          stroke="none"
+          fill="hsla(3, 87%, 64%, 1)"
+        />
+        <path
+          d="M0 0v6.7L8.54 0H0zm56.92 0 8.48 6.7.1-.08V0h-8.58zM6.3 36.2 0 41.1v14.1h8.54l10.96-8.6L6.3 36.2zm52.8 0L45.9 46.6l10.96 8.6h8.64V41.02l-.1.08-6.3-4.9z"
+          stroke-width="1"
+          stroke="none"
+          fill="hsla(31, 89%, 68%, 1)"
+        />
+        <path
+          d="M0 6.7v20.7l32.7 25.9 32.7-25.9.1.08V6.78l-.1-.08-32.7 25.6z"
+          stroke-width="1"
+          stroke="none"
+          fill="hsla(15, 87%, 66%, 1)"
+        />
+      </pattern>
+    </defs>
+    <rect
+      width="800%"
+      height="800%"
+      transform="translate(-28,-69.6)"
+      fill="url(#a)"
+    />
+  </svg>

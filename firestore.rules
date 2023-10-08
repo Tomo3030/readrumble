@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+		
+	match /classrooms/{classroomId}{
+    allow read;
+    }
+
+	match /classrooms/{restOfPath=**}{
+		allow read, write: if isSignedIn()
+		}
+
+ match /quizzes/{restOfPath=**}{
+		allow read, write: if isRegistered()
+	}
+
+	match /quizList/{restOfPath=**}{
+		allow read, write: if isRegistered()
+	}
+  }
+}
+
+function isSignedIn(){
+    return request.auth.uid != null
+}
+
+function isRegistered(){
+		return request.auth.token.email != null
+
+}
+
