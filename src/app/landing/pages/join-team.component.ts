@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamSelectComponent } from '../components/team-select.component';
 import { LandingDataAccessService } from '../services/landing-data-access.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Team } from 'src/app/shared/modals/team';
 import { JoinTeamCardComponent } from '../components/join-team-card.component';
@@ -55,7 +55,7 @@ export class JoinTeamComponent {
     private landingService: LandingDataAccessService,
     private route: ActivatedRoute,
     private spinner: SpinnerService,
-    private authService: AuthService,
+    private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
     const classroomId = this.route.snapshot.paramMap.get('classroomId');
@@ -74,7 +74,12 @@ export class JoinTeamComponent {
       .joinTeam(this.classroomId, this.currentTeam)
       .then(() => {
         this.spinner.hide();
-        //need to go somewhere so the user can't join again.
+        this.router.navigate([
+          'classroom',
+          this.classroomId,
+          'game',
+          this.currentTeam.id,
+        ]);
       })
       .catch((err) => {
         this.spinner.hide();
