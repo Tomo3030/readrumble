@@ -50,4 +50,11 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./admin/pages/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
+  },
 ];
