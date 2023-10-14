@@ -57,4 +57,11 @@ export const routes: Routes = [
         (m) => m.DashboardComponent
       ),
   },
+  {
+    path: 'dashboard/:classroomId',
+    loadComponent: () =>
+      import('./admin/pages/admin-join.component').then(
+        (m) => m.AdminJoinComponent
+      ),
+  },
 ];

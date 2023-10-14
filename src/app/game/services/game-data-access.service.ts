@@ -14,6 +14,8 @@ export class GameDataAccessService {
   constructor(private db: Firestore, private gameService: GameService) {}
 
   public initGameDataAccess(classroomId: string, gameId: string) {
+    console.log('this is not right now, the route is wrong');
+    //need to use classroom service to get the classroom id
     const gameRef = doc(this.db, `classrooms/${classroomId}/games/${gameId}`);
     const gameData = docData(gameRef) as Observable<Game>;
     return gameData.pipe(
@@ -24,6 +26,8 @@ export class GameDataAccessService {
   }
 
   public fetchQuizData(classroomId: string) {
+    console.log('this is not right now, the route is wrong');
+    //need to use classroom service to get the classroom id
     const quizRef = doc(this.db, `classrooms/${classroomId}`);
     const quizData = docData(quizRef) as Observable<Quiz>;
     return quizData;

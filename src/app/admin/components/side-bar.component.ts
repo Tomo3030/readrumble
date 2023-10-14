@@ -11,8 +11,11 @@ import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { AutocompleteComponent } from '../../shared/components/autocomplete.component';
 import { BehaviorSubject } from 'rxjs';
-import { DashboardService } from '../services/dashboard.service';
+import { DashboardService } from '../services/admin-quiz.service';
 import { ToggleComponent } from 'src/app/shared/components/toggle.component';
+import { ToastService } from 'src/app/shared/services/toast.service';
+import { Router } from '@angular/router';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -70,7 +73,12 @@ import { ToggleComponent } from 'src/app/shared/components/toggle.component';
   ],
 })
 export class SideBarComponent {
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private toast: ToastService,
+    private router: Router,
+    private spinner: SpinnerService
+  ) {}
 
   public quizes = this.dashboardService.getQuizes();
   public canEdit = this.dashboardService.canEdit;
@@ -85,7 +93,18 @@ export class SideBarComponent {
   }
 
   startGame() {
-    this.dashboardService.startGame();
+    if (this.dashboardService.quizSignal().stories.length == 0)
+      return this.toast.open('Please select a category');
+    this.spinner;
+    this.dashboardService
+      .startGame()
+      .then((classroomId: number) => {
+        console.log('make classroom service to store classroom id');
+        this.router.navigate(['dashboard', classroomId]);
+      })
+      .finally(() => {
+        this.spinner.hide();
+      });
   }
 
   toggleEdit(value) {

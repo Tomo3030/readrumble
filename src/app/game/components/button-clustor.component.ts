@@ -9,12 +9,7 @@ import { map, switchMap } from 'rxjs';
 @Component({
   selector: 'app-button-clustor',
   standalone: true,
-  imports: [
-    CommonModule,
-    IconButtonDirective,
-    ButtonDirective,
-    RippleDirective,
-  ],
+  imports: [CommonModule, ButtonDirective, RippleDirective],
   template: ` <div class="m-2 mb-3  mt-4 flex h-12  gap-4 justify-between">
     <button
       (click)="prev()"

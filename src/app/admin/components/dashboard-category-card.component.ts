@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from 'src/app/shared/components/card.component';
-import { DashboardService } from '../services/dashboard.service';
+import { DashboardService } from '../services/admin-quiz.service';
 
 @Component({
   selector: 'app-dashboard-category-card',

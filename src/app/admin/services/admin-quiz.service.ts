@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
 import { docData } from 'rxfire/firestore';
 import { first, map } from 'rxjs';
+import { Quiz } from 'src/app/shared/modals/quiz';
 import { QuizItem } from 'src/app/shared/modals/quiz-item';
 import { Story } from 'src/app/shared/modals/story';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
@@ -64,7 +65,21 @@ export class DashboardService {
     this.quizSignal.update(() => quiz);
   }
 
-  public startGame() {}
+  async startGame(): Promise<number> {
+    const quiz = this.quizSignal() as Quiz;
+    const id = Math.floor(Math.random() * 900000) + 100000;
+    const ref = collection(this.fb, 'classrooms');
+    await addDoc(ref, {
+      id: id,
+      timestamp: serverTimestamp(),
+      stories: quiz.stories,
+      items: quiz.items,
+      category: quiz.category,
+    }).catch((err) => {
+      console.log(err);
+    });
+    return id;
+  }
 
   public saveQuiz() {
     let quiz = this.quizSignal();

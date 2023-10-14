@@ -11,7 +11,7 @@ export class ButtonDirective implements OnInit {
   constructor(private el: ElementRef, private renderer: Renderer2) {
     const classes = [
       'w-full',
-      'h-full',
+      //'h-full',
       'relative',
       'overflow-hidden',
       'rounded-md',

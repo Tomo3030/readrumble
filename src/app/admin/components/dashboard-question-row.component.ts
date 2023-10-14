@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChipComponent } from 'src/app/shared/components/chip.component';
 import { QuizItem } from 'src/app/shared/modals/quiz-item';
-import { DashboardService } from '../services/dashboard.service';
+import { DashboardService } from '../services/admin-quiz.service';
 import { EditButtonComponent } from './edit-button.component';
 import { DialogService } from 'src/app/shared/services/dialog.service';
 import { EditQuestionDialogComponent } from './edit-question-dialog.component';

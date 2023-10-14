@@ -5,8 +5,9 @@ import { teamMap } from '../img-maps/team-imgs';
 })
 export class ImgMapService {
   constructor() {}
-  private teamBaseUrl = './assets/teams/';
+  private teamBaseUrl = './assets/team-images/';
   getTeamImgUrl(id: string) {
-    return `${this.teamBaseUrl}${teamMap[id]}`;
+    console.log(`${this.teamBaseUrl}${teamMap[id].assetName}`);
+    return `${this.teamBaseUrl}${teamMap[id].assetName}`;
   }
 }
