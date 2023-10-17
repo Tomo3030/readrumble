@@ -7,7 +7,7 @@ import {
   orderBy,
   query,
 } from '@angular/fire/firestore';
-import { where } from 'firebase/firestore';
+import { doc, getDoc, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -15,25 +15,20 @@ import { where } from 'firebase/firestore';
 export class ClassroomService {
   constructor(private fb: Firestore) {}
 
-  setDocumentId(classroomId: number | string, documentId: string) {
-    const id = classroomId.toString();
-    const documentRef = { classroomId: id, documentId: documentId };
-    localStorage.setItem('classroomId', JSON.stringify(documentRef));
+  private classroomRef = {};
+
+  getClassroomRef(classroomId: string): string {
+    const ref = this.classroomRef[classroomId];
+    if (!ref) new Error('No classroom ref found');
+    return ref;
   }
 
-  async getDocumentId(classroomId: number | string): Promise<string> {
-    //for local storage  classroomId needs to be a string
-    classroomId = classroomId.toString();
-    const localStorageItem = JSON.parse(
-      localStorage.getItem('classroomId') || '{}'
-    );
-    if (localStorageItem.classroomId === classroomId) {
-      return Promise.resolve(localStorageItem.documentId);
-    }
-    const classroomCollection = collection(this.fb, 'classrooms');
+  setClassroomRef(classroomId: string, classroomRef: string) {
+    this.classroomRef = { [classroomId]: classroomRef };
+  }
 
-    //for query classroomId needs to be a number
-    classroomId = parseInt(classroomId);
+  public async checkIfClassroomExists(classroomId: string): Promise<boolean> {
+    const classroomCollection = collection(this.fb, 'classrooms');
     const q = query(
       classroomCollection,
       where('id', '==', classroomId),
@@ -41,12 +36,24 @@ export class ClassroomService {
       limit(1)
     );
     const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      const documentId = querySnapshot.docs[0].id;
-      this.setDocumentId(classroomId, documentId);
-      return documentId;
-    } else {
-      throw new Error('No document found');
-    }
+    if (querySnapshot.empty) return false;
+    const documentId = querySnapshot.docs[0].id;
+    this.setClassroomRef(classroomId, documentId);
+    this.setClassroomRefInLocalStorage(classroomId, documentId);
+    this.storeQuizInLocalStorage(classroomId, querySnapshot.docs[0].data());
+    return true;
+  }
+
+  private setClassroomRefInLocalStorage(
+    classroomId: number | string,
+    documentId: string
+  ) {
+    const id = classroomId.toString();
+    const documentRef = { classroomId: id, classroomRef: documentId };
+    localStorage.setItem('classroomId', JSON.stringify(documentRef));
+  }
+
+  private storeQuizInLocalStorage(classroomId: string, quiz: any) {
+    localStorage.setItem('quiz', JSON.stringify({ [classroomId]: quiz }));
   }
 }

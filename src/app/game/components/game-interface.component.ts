@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Story } from 'src/app/shared/modals/story';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { StoryCardComponent } from './story-card.component';
 import { QuestionCardComponent } from './question-card.component';
@@ -18,7 +18,10 @@ import { QuizService } from '../services/quiz.service';
         <app-story-card [story]="story"></app-story-card>
         <app-question-card></app-question-card>
       </div>
-      <app-action-bar class="fixed bottom-0 w-full bg-card"></app-action-bar>
+      <app-action-bar
+        class="fixed bottom-0 w-full bg-card"
+        (onSubmitQuiz)="submitQuiz()"
+      ></app-action-bar>
     </div>
   `,
   styles: [],
@@ -31,7 +34,15 @@ import { QuizService } from '../services/quiz.service';
   ],
 })
 export class GameInterfaceComponent {
-  constructor() {}
+  constructor(private quizService: QuizService) {}
   @Input() story: Story;
   @Input() quizForm: Observable<FormArray<FormGroup>>;
+
+  submitQuiz() {
+    let correctedQuiz: boolean[] = [];
+    this.quizForm.pipe(take(1)).subscribe((quizForm) => {
+      correctedQuiz = this.quizService.correctQuiz(quizForm);
+    });
+    console.log(correctedQuiz);
+  }
 }

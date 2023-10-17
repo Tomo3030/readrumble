@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurrentQuestionIndicatorComponent } from './current-question-indicator.component';
 import { ButtonClustorComponent } from './button-clustor.component';
@@ -11,7 +11,7 @@ import { FormArray, FormGroup } from '@angular/forms';
   template: `
     <div class=>
       <app-current-question-indicator></app-current-question-indicator>
-      <app-button-clustor></app-button-clustor>
+      <app-button-clustor (submitQuiz)="onSubmit()"></app-button-clustor>
     </div>
   `,
   styles: [],
@@ -21,4 +21,9 @@ import { FormArray, FormGroup } from '@angular/forms';
     ButtonClustorComponent,
   ],
 })
-export class ActionBarComponent {}
+export class ActionBarComponent {
+  @Output() onSubmitQuiz = new EventEmitter();
+  onSubmit() {
+    this.onSubmitQuiz.emit();
+  }
+}

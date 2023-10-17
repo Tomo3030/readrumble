@@ -48,7 +48,6 @@ export class GamePageComponent {
       .initGameDataAccess(classroomId, gameId)
       .subscribe((data) => {
         this.story = this.quizService.getMyStory();
-        console.log(this.story);
         this.quizForm = this.quizService.quizForm$;
       });
   }

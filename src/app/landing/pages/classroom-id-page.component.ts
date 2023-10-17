@@ -13,10 +13,10 @@ import {
   doc,
   getDoc,
 } from '@angular/fire/firestore';
-import { LandingDataAccessService } from '../services/landing-data-access.service';
 import { FormsModule } from '@angular/forms';
 import { shake } from 'src/app/animations/shake';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ClassroomService } from 'src/app/shared/services/classroom.service';
 
 @Component({
   selector: 'app-classroom-id-page',
@@ -78,7 +78,7 @@ export class ClassroomIdPageComponent {
   constructor(
     public router: Router,
     public toast: ToastService,
-    private landingService: LandingDataAccessService,
+    private classroomSerice: ClassroomService,
     private spinner: SpinnerService
   ) {}
 
@@ -88,7 +88,7 @@ export class ClassroomIdPageComponent {
       return;
     }
     this.spinner.show();
-    this.landingService
+    this.classroomSerice
       .checkIfClassroomExists(this.classroomId)
       .then((exists) => {
         if (exists) {

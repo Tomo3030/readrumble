@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from 'src/app/shared/components/card.component';
 import { TeamCardImgComponent } from 'src/app/shared/components/team-card-img.component';
@@ -66,10 +74,19 @@ export class AddTeamCardComponent implements OnInit {
   ngOnInit() {
     this.displayTeam = this.teams[this.index];
   }
-  @Input() teams!: Team[];
+
+  @Input() set teams(value: Team[]) {
+    this._teams = value;
+    this.displayTeam = this.teams[this.index];
+  }
   @Output() teamAdded = new EventEmitter();
   index = 0;
   displayTeam!: Team;
+
+  get teams() {
+    return this._teams;
+  }
+  private _teams: Team[] = [];
 
   increment() {
     this.index++;
@@ -88,6 +105,6 @@ export class AddTeamCardComponent implements OnInit {
   }
 
   addTeam() {
-    this.teamAdded.emit();
+    this.teamAdded.emit(this.displayTeam);
   }
 }

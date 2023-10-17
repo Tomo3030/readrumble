@@ -5,6 +5,7 @@ import { Game } from 'src/app/shared/modals/game';
   providedIn: 'root',
 })
 export class GameService {
+  //the gameState is updated from the game-page-component
   private _gameState = signal<Game>({
     created: new Date(0, 0),
     gameStatus: 'waitingToStart',

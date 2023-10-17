@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { quizResolver } from './shared/resolvers/quiz.resolver';
+import { classroomResolver } from './shared/resolvers/classroom.resolver';
 
 export const routes: Routes = [
   {
@@ -25,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'classroom/:classroomId',
-    resolve: { quiz: quizResolver },
+    resolve: { classroom: classroomResolver },
     children: [
       {
         path: '',
@@ -59,9 +59,22 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard/:classroomId',
-    loadComponent: () =>
-      import('./admin/pages/admin-join.component').then(
-        (m) => m.AdminJoinComponent
-      ),
+    resolve: { classroom: classroomResolver },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./admin/pages/admin-join.component').then(
+            (m) => m.AdminJoinComponent
+          ),
+      },
+      {
+        path: 'dashboard/:classroomId/game',
+        loadComponent: () =>
+          import('./admin/pages/game-status.component').then(
+            (m) => m.GameStatusComponent
+          ),
+      },
+    ],
   },
 ];

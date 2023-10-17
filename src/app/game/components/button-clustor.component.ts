@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconButtonDirective } from 'src/app/shared/directives/icon-button.directive';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
@@ -22,6 +22,7 @@ import { map, switchMap } from 'rxjs';
     </button>
 
     <button
+      (click)="submit()"
       [disabled]="!(valid$ | async)"
       appButton
       appRipple
@@ -43,6 +44,7 @@ import { map, switchMap } from 'rxjs';
   styles: [],
 })
 export class ButtonClustorComponent {
+  @Output() submitQuiz = new EventEmitter();
   constructor(private quizService: QuizService) {}
 
   valid$ = this.quizService.quizForm$.pipe(
@@ -57,5 +59,9 @@ export class ButtonClustorComponent {
 
   public prev() {
     this.quizService.decrementQuizIndex();
+  }
+
+  public submit() {
+    this.submitQuiz.emit();
   }
 }

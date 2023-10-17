@@ -35,19 +35,11 @@ export class QuizService {
   ) {}
 
   //called from resolver
-  public isQuizReady(classroomId: string): Observable<boolean> {
-    const quiz = this.getQuizObservable(classroomId);
-    return quiz.pipe(
-      tap((quiz) => {
-        if (!quiz) throw new Error('Quiz not found');
-        localStorage.setItem('quiz', JSON.stringify({ [classroomId]: quiz }));
-        this.stories.set(quiz.stories);
-        this.quizFormSubject.next(this.makeFormArray(quiz.items));
-      }),
-      map((quiz) => {
-        return !!quiz;
-      })
-    );
+  public setQuiz(quiz: Quiz) {
+    if (!quiz) throw new Error('Quiz not found');
+    localStorage.setItem('quiz', JSON.stringify({ [quiz.id]: quiz }));
+    this.stories.set(quiz.stories);
+    this.quizFormSubject.next(this.makeFormArray(quiz.items));
   }
 
   public incrementQuizIndex() {
@@ -70,6 +62,21 @@ export class QuizService {
     return this.stories()[myIndex];
   }
 
+  public correctQuiz(quizForm: FormArray<FormGroup>): boolean[] {
+    let correct: boolean[] = [];
+    const controls = quizForm.controls.map((control) => control.value) as any[];
+    controls.map((f) => {
+      let correctAnswers = f.answers;
+      let userAnswers = f.choices.filter((c) => c.value).map((c) => c.text);
+      if (correctAnswers.length !== userAnswers.length) correct.push(false);
+      else {
+        let isCorrect = correctAnswers.every((a) => userAnswers.includes(a));
+        correct.push(isCorrect);
+      }
+    });
+    return correct;
+  }
+
   private getMyIndex() {
     const members = this.game.members();
     if (!members.length) throw new Error('Members not found');
@@ -78,29 +85,6 @@ export class QuizService {
     let myIndex = members.indexOf(displayName);
     if (myIndex === -1) throw new Error('User not found in game');
     return myIndex;
-  }
-
-  private getQuizObservable(classroomId: string): Observable<Quiz> {
-    let localQuiz = this.getQuizFromLocalStorage(classroomId);
-    if (localQuiz) return of(localQuiz);
-    else {
-      return this.dataAccess.fetchQuizData(classroomId);
-    }
-  }
-
-  private getQuizFromLocalStorage(classroomId: string) {
-    let rawQuiz = localStorage.getItem('quiz');
-    let quiz: Quiz | null = null;
-    if (rawQuiz) {
-      let parsed = JSON.parse(rawQuiz);
-      let quiz = parsed[classroomId];
-      if (quiz) {
-        quiz = quiz as Quiz;
-      } else {
-        localStorage.removeItem('quiz');
-      }
-    }
-    return quiz;
   }
 
   private makeFormArray(items: QuizItem[]): FormArray {

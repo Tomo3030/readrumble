@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamSelectComponent } from '../components/team-select.component';
-import { LandingDataAccessService } from '../services/landing-data-access.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Team } from 'src/app/shared/modals/team';
@@ -9,7 +8,7 @@ import { JoinTeamCardComponent } from '../components/join-team-card.component';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { TeamService } from 'src/app/shared/services/team.service';
 
 @Component({
   selector: 'app-join-team',
@@ -52,14 +51,14 @@ export class JoinTeamComponent {
   private classroomId =
     this.activatedRoute.snapshot.paramMap.get('classroomId');
   constructor(
-    private landingService: LandingDataAccessService,
     private route: ActivatedRoute,
     private spinner: SpinnerService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private teamService: TeamService
   ) {
     const classroomId = this.route.snapshot.paramMap.get('classroomId');
-    this.teamData$ = this.landingService.getTeamData(classroomId);
+    this.teamData$ = this.teamService.getClassroomTeams(classroomId);
   }
 
   setCurrentTeam(team: Team) {
@@ -70,7 +69,7 @@ export class JoinTeamComponent {
     if (!this.currentTeam) new Error('No currentTeam selected');
     if (!this.classroomId) new Error('No classroomId');
     this.spinner.show();
-    this.landingService
+    this.teamService
       .joinTeam(this.classroomId, this.currentTeam)
       .then(() => {
         this.spinner.hide();
