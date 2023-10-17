@@ -7,6 +7,7 @@ import { Observable, tap } from 'rxjs';
 import { Game } from 'src/app/shared/modals/game';
 import { Quiz } from 'src/app/shared/modals/quiz';
 import { ClassroomService } from 'src/app/shared/services/classroom.service';
+import { ImgMapService } from 'src/app/shared/services/img-map.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class GameDataAccessService {
   constructor(
     private db: Firestore,
     private gameService: GameService,
-    private classroom: ClassroomService
+    private classroom: ClassroomService,
+    private imgMap: ImgMapService
   ) {}
 
   public initGameDataAccess(classroomId: string, gameId: string) {
@@ -26,6 +28,7 @@ export class GameDataAccessService {
     const gameData = docData(gameRef) as Observable<Game>;
     return gameData.pipe(
       tap((game) => {
+        game.imgUrl = this.imgMap.getTeamImgUrl(game?.id);
         this.gameService.updateGameState(game);
       })
     );

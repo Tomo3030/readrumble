@@ -8,6 +8,7 @@ import { QuestionCardComponent } from './question-card.component';
 import { ButtonClustorComponent } from './button-clustor.component';
 import { ActionBarComponent } from './action-bar.component';
 import { QuizService } from '../services/quiz.service';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-game-interface',

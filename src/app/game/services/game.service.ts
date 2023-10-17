@@ -19,6 +19,7 @@ export class GameService {
   //selecters
   public status = computed(() => this._gameState().gameStatus);
   public members = computed(() => this._gameState().members);
+  public gameState = computed(() => this._gameState());
 
   public updateGameState(game: Game) {
     this._gameState.set(game);
