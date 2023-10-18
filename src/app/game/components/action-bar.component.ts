@@ -4,6 +4,8 @@ import { CurrentQuestionIndicatorComponent } from './current-question-indicator.
 import { ButtonClustorComponent } from './button-clustor.component';
 import { Observable } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
+import { AnswerSubmittedComponent } from '../../admin/components/answer-submitted.component';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-action-bar',
@@ -12,6 +14,7 @@ import { FormArray, FormGroup } from '@angular/forms';
     <div class=>
       <app-current-question-indicator></app-current-question-indicator>
       <app-button-clustor (submitQuiz)="onSubmit()"></app-button-clustor>
+      <app-answer-submitted *ngIf='submited()'></app-answer-submitted>
     </div>
   `,
   styles: [],
@@ -19,10 +22,13 @@ import { FormArray, FormGroup } from '@angular/forms';
     CommonModule,
     CurrentQuestionIndicatorComponent,
     ButtonClustorComponent,
+    AnswerSubmittedComponent,
   ],
 })
 export class ActionBarComponent {
   @Output() onSubmitQuiz = new EventEmitter();
+  submited = this.game.answerSubmitted;
+  constructor(private game: GameService) {}
   onSubmit() {
     this.onSubmitQuiz.emit();
   }

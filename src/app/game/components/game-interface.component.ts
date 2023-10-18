@@ -9,6 +9,8 @@ import { ButtonClustorComponent } from './button-clustor.component';
 import { ActionBarComponent } from './action-bar.component';
 import { QuizService } from '../services/quiz.service';
 import { GameService } from '../services/game.service';
+import { GameDataAccessService } from '../services/game-data-access.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-interface',
@@ -35,15 +37,19 @@ import { GameService } from '../services/game.service';
   ],
 })
 export class GameInterfaceComponent {
-  constructor(private quizService: QuizService) {}
+  constructor(
+    private quizService: QuizService,
+    private data: GameDataAccessService,
+    private route: ActivatedRoute
+  ) {}
   @Input() story: Story;
   @Input() quizForm: Observable<FormArray<FormGroup>>;
 
   submitQuiz() {
-    let correctedQuiz: boolean[] = [];
     this.quizForm.pipe(take(1)).subscribe((quizForm) => {
-      correctedQuiz = this.quizService.correctQuiz(quizForm);
+      const correctedQuiz = this.quizService.correctQuiz(quizForm);
+      const classroomId = this.route.snapshot.paramMap.get('classroomId');
+      this.data.postQuizResults(classroomId, correctedQuiz);
     });
-    console.log(correctedQuiz);
   }
 }

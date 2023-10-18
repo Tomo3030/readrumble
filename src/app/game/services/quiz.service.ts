@@ -74,7 +74,15 @@ export class QuizService {
         correct.push(isCorrect);
       }
     });
+    this.disableQuiz();
     return correct;
+  }
+
+  private disableQuiz() {
+    const form = this.quizFormSubject.value;
+    if (!form) throw new Error('No form found');
+    form.disable();
+    this.quizFormSubject.next(form);
   }
 
   private getMyIndex() {

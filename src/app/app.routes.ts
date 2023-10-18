@@ -50,6 +50,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: 'dashboard',
     loadComponent: () =>
@@ -69,7 +70,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'dashboard/:classroomId/game',
+        path: 'game',
         loadComponent: () =>
           import('./admin/pages/game-status.component').then(
             (m) => m.GameStatusComponent

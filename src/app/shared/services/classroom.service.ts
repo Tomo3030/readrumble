@@ -19,7 +19,7 @@ export class ClassroomService {
 
   getClassroomRef(classroomId: string): string {
     const ref = this.classroomRef[classroomId];
-    if (!ref) new Error('No classroom ref found');
+    if (!ref) throw new Error('No classroom ref found');
     return ref;
   }
 
