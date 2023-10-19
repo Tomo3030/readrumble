@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { fade } from 'src/app/animations/fade';
+import { Game } from 'src/app/shared/modals/game';
 
 @Component({
   selector: 'app-status-card-team',
@@ -49,10 +50,5 @@ import { fade } from 'src/app/animations/fade';
   ],
 })
 export class StatusCardTeamComponent {
-  @Input() scoreData!: {
-    imgUrl: string;
-    teamName: string;
-    score: number;
-    gameStatus: string;
-  };
+  @Input() scoreData!: Game;
 }

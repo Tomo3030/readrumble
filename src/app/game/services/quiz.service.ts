@@ -28,7 +28,6 @@ export class QuizService {
   public quizIndex$ = this.quizIndexSubject.asObservable();
 
   constructor(
-    private dataAccess: GameDataAccessService,
     private fb: FormBuilder,
     private game: GameService,
     private auth: AuthService
@@ -62,8 +61,9 @@ export class QuizService {
     return this.stories()[myIndex];
   }
 
-  public correctQuiz(quizForm: FormArray<FormGroup>): boolean[] {
+  public correctQuiz(): boolean[] {
     let correct: boolean[] = [];
+    const quizForm = this.quizFormSubject.getValue();
     const controls = quizForm.controls.map((control) => control.value) as any[];
     controls.map((f) => {
       let correctAnswers = f.answers;

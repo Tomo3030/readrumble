@@ -11,6 +11,7 @@ import { AnchorService } from './anchor.service';
 })
 export class DialogService {
   private viewContainerRef: ViewContainerRef | null = null;
+  public isOpen = false;
   constructor(private anchor: AnchorService) {
     this.viewContainerRef = this.anchor.anchorRef;
   }
@@ -27,10 +28,12 @@ export class DialogService {
         }
       }
     }
+    this.isOpen = true;
     return popup;
   }
 
   close() {
     this.viewContainerRef?.clear();
+    this.isOpen = false;
   }
 }

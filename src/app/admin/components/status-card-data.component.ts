@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { fade } from 'src/app/animations/fade';
+import { Game } from 'src/app/shared/modals/game';
 
 @Component({
   selector: 'app-status-card-data',
@@ -10,7 +11,7 @@ import { fade } from 'src/app/animations/fade';
   template: `
     <div class="stack-grid h-24 ">
       <div
-        *ngIf="scoreData.gameStatus === 'skeleton'"
+        *ngIf="gameData.gameStatus === 'skeleton'"
         [@fade]
         class="mt-2 flex h-full flex-col items-center justify-center gap-2"
       >
@@ -20,26 +21,29 @@ import { fade } from 'src/app/animations/fade';
       </div>
 
       <div
-        *ngIf="scoreData.gameStatus === 'score'"
+        *ngIf="gameData.gameStatus === 'score'"
         [@fade]
         class="flex  h-24 flex-col items-center gap-2"
       >
         <div class=" font-light">score</div>
-        <div class=" text-6xl font-bold">{{ scoreData.score }}</div>
+        <div class=" text-6xl font-bold">{{ gameData.score }}</div>
       </div>
 
       <div
         [@fade]
-        *ngIf="scoreData.gameStatus === 'playing'"
+        *ngIf="gameData.gameStatus === 'playing'"
         class="flex h-24 flex-col items-center"
       >
         <img src="assets/playing.svg" alt="" class=" w-20" />
-        <div class="text-xs font-bold uppercase">playing</div>
+        <div class="text-xs font-bold uppercase  text-center">
+          <div>playing</div>
+          {{ gameData.responses?.length }} / {{ gameData.members.length }}
+        </div>
       </div>
 
       <div
         [@fade]
-        *ngIf="scoreData.gameStatus === 'gameOver'"
+        *ngIf="gameData.gameStatus === 'gameOver'"
         class="flex h-24 flex-col items-center "
       >
         <div class="flex flex-col items-center">
@@ -63,10 +67,5 @@ import { fade } from 'src/app/animations/fade';
   ],
 })
 export class StatusCardDataComponent {
-  @Input() scoreData!: {
-    imgUrl: string;
-    teamName: string;
-    score: number;
-    gameStatus: string;
-  };
+  @Input() gameData!: Game;
 }

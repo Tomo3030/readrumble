@@ -5,12 +5,11 @@ import { GameService } from './game.service';
   providedIn: 'root',
 })
 export class ScoreService {
-  private scoreObject = {};
-  private results = [];
-
+  private _scoreData = { score: 0, answers: [] };
   constructor(private game: GameService) {}
 
   public getScoreData() {
+    if (this._scoreData.answers.length > 0) return this._scoreData;
     const members = this.game.members;
     const responses = this.game.responses;
     if (!responses) throw new Error('No responses found');
@@ -18,7 +17,9 @@ export class ScoreService {
     const justAnswers = responses().map((r) => r.answers);
     //transpose and sort
     const answers = this.transposeAndSortResponses(justAnswers);
+    console.log(answers.length);
     const score = this.calculateScore(answers, members().length);
+    this._scoreData = { score, answers };
     return { score, answers };
   }
 

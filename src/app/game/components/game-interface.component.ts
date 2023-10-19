@@ -47,7 +47,7 @@ export class GameInterfaceComponent {
 
   submitQuiz() {
     this.quizForm.pipe(take(1)).subscribe((quizForm) => {
-      const correctedQuiz = this.quizService.correctQuiz(quizForm);
+      const correctedQuiz = this.quizService.correctQuiz();
       const classroomId = this.route.snapshot.paramMap.get('classroomId');
       this.data.postQuizResults(classroomId, correctedQuiz);
     });
