@@ -191,7 +191,7 @@ export class SignInComponent {
   }
 
   continue() {
-    console.log('continue');
+    this.router.navigate(['dashboard']);
   }
 
   logOut() {

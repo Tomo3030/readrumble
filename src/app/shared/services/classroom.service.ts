@@ -8,52 +8,72 @@ import {
   query,
 } from '@angular/fire/firestore';
 import { doc, getDoc, where } from 'firebase/firestore';
+import { DocumentData } from 'rxfire/firestore/interfaces';
+import { QuizService } from 'src/app/game/services/quiz.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClassroomService {
-  constructor(private fb: Firestore) {}
+  constructor(private fb: Firestore, private quizService: QuizService) {}
 
   private classroomRef = {};
 
-  getClassroomRef(classroomId: string): string {
-    const ref = this.classroomRef[classroomId];
+  public getClassroomRef(classroomId: string): string {
+    let ref = this.classroomRef[classroomId];
+    if (!ref) ref = this.getClassroomFromLocalStorage(classroomId);
     if (!ref) throw new Error('No classroom ref found');
     return ref;
   }
 
-  setClassroomRef(classroomId: string, classroomRef: string) {
+  public setClassroomRef(classroomId: string, classroomRef: string) {
     this.classroomRef = { [classroomId]: classroomRef };
+  }
+
+  public resolveClassroom(classroomId: string): Promise<boolean> {
+    const ref = this.getClassroomFromLocalStorage(classroomId);
+    if (ref) {
+      this.quizService.setQuiz(ref.quiz);
+      this.setClassroomRef(classroomId, ref.classroomRef);
+      return Promise.resolve(true);
+    }
+    return this.checkIfClassroomExists(classroomId);
   }
 
   public async checkIfClassroomExists(classroomId: string): Promise<boolean> {
     const classroomCollection = collection(this.fb, 'classrooms');
+    //for query id needs to be a number
+    const id = parseInt(classroomId);
     const q = query(
       classroomCollection,
-      where('id', '==', classroomId),
+      where('id', '==', id),
       orderBy('timestamp'),
       limit(1)
     );
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) return false;
-    const documentId = querySnapshot.docs[0].id;
-    this.setClassroomRef(classroomId, documentId);
-    this.setClassroomRefInLocalStorage(classroomId, documentId);
-    this.storeQuizInLocalStorage(classroomId, querySnapshot.docs[0].data());
+    const document = querySnapshot.docs[0];
+    const classroomRef = document.id;
+    const quiz = document.data() as any;
+    const classroom = { classroomId, classroomRef, quiz };
+    this.storeDocData(classroom);
+    this.setClassroomRef(classroomId, classroomRef);
+    this.quizService.setQuiz(quiz);
     return true;
   }
 
-  private setClassroomRefInLocalStorage(
-    classroomId: number | string,
-    documentId: string
-  ) {
-    const id = classroomId.toString();
-    const documentRef = { classroomId: id, classroomRef: documentId };
-    localStorage.setItem('classroomId', JSON.stringify(documentRef));
+  getClassroomFromLocalStorage(classroomId): any {
+    let ref = JSON.parse(localStorage.getItem('classroom') || '{}');
+    if (!ref) return false;
+    if (ref.classroomId !== classroomId) return false;
+    return ref;
   }
 
-  private storeQuizInLocalStorage(classroomId: string, quiz: any) {
-    localStorage.setItem('quiz', JSON.stringify({ [classroomId]: quiz }));
+  private storeDocData(data: {
+    classroomId: string;
+    classroomRef: string;
+    quiz: any;
+  }) {
+    localStorage.setItem('classroom', JSON.stringify(data));
   }
 }

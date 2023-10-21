@@ -90,10 +90,11 @@ export class GameDataAccessService {
   }
 
   private haveAllMembersHaveResponded(game: Game) {
-    const hasMembers = game.members.length > 0;
-    const hasResponses = game.responses.length > 0;
+    const hasMembers = game.members?.length > 0;
+    const hasResponses = game.responses?.length > 0;
     const isPlaying = game.gameStatus !== 'gameOver';
-    const everyoneHasResponded = game.members.length === game.responses.length;
+    const everyoneHasResponded =
+      game.members?.length === game.responses?.length;
     return hasMembers && hasResponses && isPlaying && everyoneHasResponded;
   }
 

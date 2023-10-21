@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideBarComponent } from '../components/side-bar.component';
 import { DashboardQuizViewComponent } from '../components/dashboard-quiz-view.component';
+import { QuizService } from 'src/app/game/services/quiz.service';
+import { ClassroomService } from 'src/app/shared/services/classroom.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,4 +17,6 @@ import { DashboardQuizViewComponent } from '../components/dashboard-quiz-view.co
   styles: [],
   imports: [CommonModule, SideBarComponent, DashboardQuizViewComponent],
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  constructor() {}
+}

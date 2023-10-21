@@ -21,7 +21,6 @@ export class AuthService {
   constructor(private auth: Auth) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         this._user.set(user);
       }
     });

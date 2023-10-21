@@ -14,8 +14,10 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDocs,
   serverTimestamp,
   setDoc,
+  writeBatch,
 } from 'firebase/firestore';
 import { Team } from '../modals/team';
 import { collectionData } from 'rxfire/firestore';
@@ -39,7 +41,6 @@ export class TeamService {
 
   public getClassroomTeams(classroomId: string) {
     const classroomRef = this.classroom.getClassroomRef(classroomId);
-
     const teamRef = collection(this.db, 'classrooms', classroomRef, 'games');
     const teamData = collectionData(teamRef) as Observable<Team[]>;
     return teamData.pipe(
@@ -98,5 +99,32 @@ export class TeamService {
     const classroomRef = this.classroom.getClassroomRef(classroomId);
     const docRef = doc(this.db, 'classrooms', classroomRef, 'games', team.id);
     return setDoc(docRef, { members: arrayUnion(user) }, { merge: true });
+  }
+
+  public async changeTeamsStatusToPlaying(classroomId: string) {
+    const classroomRef = this.classroom.getClassroomRef(classroomId);
+    const teamCollection = collection(
+      this.db,
+      'classrooms',
+      classroomRef,
+      'games'
+    );
+    const querySnapshot = await getDocs(teamCollection);
+    const batch = writeBatch(this.db);
+
+    querySnapshot.docs.forEach((docSnapshot) => {
+      const docRef = doc(
+        this.db,
+        'classrooms',
+        classroomRef,
+        'games',
+        docSnapshot.id
+      );
+      batch.update(docRef, {
+        gameStatus: 'playing',
+      });
+    });
+
+    return batch.commit();
   }
 }

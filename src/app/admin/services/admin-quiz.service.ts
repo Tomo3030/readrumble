@@ -75,9 +75,15 @@ export class DashboardService {
       stories: quiz.stories,
       items: quiz.items,
       category: quiz.category,
-    }).catch((err) => {
-      console.log(err);
-    });
+    })
+      .then((doc) => {
+        console.log(doc.id);
+
+        localStorage.setItem('classroomId', JSON.stringify({ id: doc.id }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     return id;
   }
 
