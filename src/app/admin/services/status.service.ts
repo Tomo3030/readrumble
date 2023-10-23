@@ -39,7 +39,6 @@ export class StatusService {
     ]).pipe(
       map(([scoreData, showSkeleton, scoreInterval]) => {
         let data = [...scoreData];
-        console.log(data);
         this.teams$.next(data);
         if (showSkeleton) {
           data.map((data) => {

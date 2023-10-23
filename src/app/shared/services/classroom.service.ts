@@ -20,14 +20,13 @@ export class ClassroomService {
   private classroomRef = {};
 
   public getClassroomRef(classroomId: string): string {
-    let ref = this.classroomRef[classroomId];
-    if (!ref) ref = this.getClassroomFromLocalStorage(classroomId);
-    if (!ref) throw new Error('No classroom ref found');
+    let ref: string | null = this.classroomRef[classroomId];
+    if (!ref) {
+      ref = this.getClassroomFromLocalStorage(classroomId);
+      if (ref) this.setClassroomRef(classroomId, ref);
+    }
+    if (!ref) throw new Error(`No classroom ref found for ID: ${classroomId}`);
     return ref;
-  }
-
-  public setClassroomRef(classroomId: string, classroomRef: string) {
-    this.classroomRef = { [classroomId]: classroomRef };
   }
 
   public resolveClassroom(classroomId: string): Promise<boolean> {
@@ -56,20 +55,24 @@ export class ClassroomService {
     const classroomRef = document.id;
     const quiz = document.data() as any;
     const classroom = { classroomId, classroomRef, quiz };
-    this.storeDocData(classroom);
+    this.storeDocDataInLocalStorage(classroom);
     this.setClassroomRef(classroomId, classroomRef);
     this.quizService.setQuiz(quiz);
     return true;
   }
 
-  getClassroomFromLocalStorage(classroomId): any {
+  private setClassroomRef(classroomId: string, classroomRef: string) {
+    this.classroomRef = { [classroomId]: classroomRef };
+  }
+
+  private getClassroomFromLocalStorage(classroomId): any {
     let ref = JSON.parse(localStorage.getItem('classroom') || '{}');
     if (!ref) return false;
     if (ref.classroomId !== classroomId) return false;
     return ref;
   }
 
-  private storeDocData(data: {
+  private storeDocDataInLocalStorage(data: {
     classroomId: string;
     classroomRef: string;
     quiz: any;

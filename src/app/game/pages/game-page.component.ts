@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, OnDestroy, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameDataAccessService } from '../services/game-data-access.service';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,7 @@ import { GameInterfaceComponent } from '../components/game-interface.component';
 import { ScoreComponent } from '../components/score.component';
 import { GameService } from '../services/game.service';
 import { QuizService } from '../services/quiz.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game-page',
@@ -30,10 +31,11 @@ import { QuizService } from '../services/quiz.service';
     ScoreComponent,
   ],
 })
-export class GamePageComponent {
+export class GamePageComponent implements OnDestroy {
   public gameStatus: Signal<string> = this.gameSerice.status;
   public story;
   public quizForm;
+  private sub: any;
 
   constructor(
     private dataAccess: GameDataAccessService,
@@ -44,11 +46,14 @@ export class GamePageComponent {
     const classroomId =
       this.activatedRoute.snapshot.paramMap.get('classroomId');
     const gameId = this.activatedRoute.snapshot.paramMap.get('gameId');
-    this.dataAccess
+    this.sub = this.dataAccess
       .initGameDataAccess(classroomId, gameId)
       .subscribe((data) => {
         this.story = this.quizService.getMyStory();
         this.quizForm = this.quizService.quizForm$;
       });
+  }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

@@ -57,9 +57,7 @@ export class AdminJoinComponent implements OnInit {
     private team: TeamService,
     private router: Router
   ) {
-    this.route.params.subscribe((params) => {
-      this.classroomId = params['classroomId'];
-    });
+    this.classroomId = this.route.snapshot.paramMap.get('classroomId');
   }
   ngOnInit() {
     this.teams = this.team.getClassroomTeams(this.classroomId);
