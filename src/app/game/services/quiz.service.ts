@@ -58,7 +58,9 @@ export class QuizService {
 
   public getMyStory() {
     const myIndex = this.getMyIndex();
-    return this.stories()[myIndex];
+    const stories = this.stories();
+    const myStoryIndex = myIndex % stories.length;
+    return this.stories()[myStoryIndex];
   }
 
   public correctQuiz(): boolean[] {
