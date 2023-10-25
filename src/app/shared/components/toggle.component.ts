@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -20,12 +20,12 @@ import { FormsModule } from '@angular/forms';
       />
       <span
         class="rounded-l-md px-8 py-2 bg-gray-300"
-        [style.background-color]="value ? '' : '#F6B166'"
+        [style.background-color]="toggleValue() ? '' : '#F6B166'"
         >Off</span
       >
       <span
         class="rounded-r-md px-8 py-2 bg-gray-300"
-        [style.background-color]="value ? '#F6B166' : ''"
+        [style.background-color]="toggleValue() ? '#F6B166' : ''"
         >On</span
       >
     </label>
@@ -34,9 +34,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class ToggleComponent {
   @Output() onToggle = new EventEmitter<boolean>();
+  @Input() toggleValue = signal(false);
   value = false;
   changed() {
-    this.value = !this.value;
-    this.onToggle.emit(this.value);
+    this.onToggle.emit();
   }
 }

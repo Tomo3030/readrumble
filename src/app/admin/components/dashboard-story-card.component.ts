@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from 'src/app/shared/components/card.component';
 import { Story } from 'src/app/shared/modals/story';
-import { DashboardService } from '../services/admin-quiz.service';
+import { DashboardService } from '../services/dashboard.service';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { EditButtonComponent } from './edit-button.component';

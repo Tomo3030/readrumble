@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardService } from '../services/admin-quiz.service';
+import { DashboardService } from '../services/dashboard.service';
 import { DialogService } from 'src/app/shared/services/dialog.service';
 import { FormsModule } from '@angular/forms';
 

@@ -1,6 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
 import { docData } from 'rxfire/firestore';
 import { first, map } from 'rxjs';
 import { Quiz } from 'src/app/shared/modals/quiz';
@@ -13,18 +19,18 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 })
 export class DashboardService {
   constructor(private fb: Firestore, private spinner: SpinnerService) {}
-
+  public canEdit = signal(false);
+  public hasBeenEdited = signal(false);
   public quizSignal = signal({
     id: '',
     category: '',
     stories: [] as Story[],
     items: [] as QuizItem[],
   });
+  private initialCategoryValue = '';
+  private currentQuizId = '';
 
-  public canEdit = signal(false);
-  public hasBeenEdited = signal(false);
-
-  public getQuizes() {
+  public getQuizList() {
     let ref = doc(this.fb, 'quizList', 'list');
     return docData(ref).pipe(
       map((data) => {
@@ -39,7 +45,10 @@ export class DashboardService {
 
   public selectQuiz(id: string) {
     this.spinner.show();
-    let ref = doc(this.fb, 'quizzes', id.toString());
+    this.currentQuizId = id;
+    this.canEdit.set(false);
+    //but strange button behavior
+    let ref = doc(this.fb, 'quizzes', id);
     docData(ref)
       .pipe(first())
       .subscribe((quiz: any) => {
@@ -49,12 +58,15 @@ export class DashboardService {
           stories: quiz.stories,
           items: quiz.items,
         };
+
+        this.initialCategoryValue = quiz.category;
         this.quizSignal.update(() => q);
         this.spinner.hide();
       });
   }
 
   public createNewQuiz() {
+    this.currentQuizId = '';
     this.toggleEdit();
     let quiz = {
       id: '',
@@ -87,10 +99,10 @@ export class DashboardService {
     return id;
   }
 
-  public saveQuiz() {
-    let quiz = this.quizSignal();
-    let ref = collection(this.fb, 'quizzes');
-    addDoc(ref, quiz);
+  public async saveQuiz() {
+    const quiz = this.quizSignal();
+    const isNewQuiz = this.currentQuizId === '';
+    isNewQuiz ? this.saveNewQuiz(quiz) : this.saveEditedQuiz(quiz);
   }
 
   public toggleEdit() {
@@ -116,6 +128,14 @@ export class DashboardService {
     this.quizSignal.update((quiz) => ({
       ...quiz,
       items: items,
+    }));
+  }
+
+  public editCategory(category: string) {
+    this.hasBeenEdited.update(() => true);
+    this.quizSignal.update((quiz) => ({
+      ...quiz,
+      category: category,
     }));
   }
 
@@ -198,5 +218,28 @@ export class DashboardService {
       ...quiz,
       items: items,
     }));
+  }
+
+  private async saveNewQuiz(quiz: Quiz) {
+    console.log('new quiz');
+    const ref = collection(this.fb, 'quizzes');
+    const document = await addDoc(ref, quiz);
+    return this.updateQuizList(document.id, quiz.category);
+  }
+
+  private saveEditedQuiz(quiz: Quiz) {
+    let quizRef = this.currentQuizId;
+    if (!quizRef) throw new Error('No quiz id found');
+    const categoryNameChange =
+      this.quizSignal().category !== this.initialCategoryValue;
+    const ref = doc(this.fb, 'quizzes', quizRef);
+    setDoc(ref, quiz);
+    if (categoryNameChange) return this.updateQuizList(quizRef, quiz.category);
+    return Promise.resolve();
+  }
+
+  private updateQuizList(docId: string, category: string) {
+    let quizListRef = doc(this.fb, 'quizList', 'list');
+    return setDoc(quizListRef, { [docId]: category }, { merge: true });
   }
 }

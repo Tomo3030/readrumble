@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from 'src/app/shared/components/card.component';
-import { DashboardService } from '../services/admin-quiz.service';
+import { DashboardService } from '../services/dashboard.service';
+import { BehaviorSubject, debounceTime, delay } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-category-card',
@@ -24,9 +25,22 @@ import { DashboardService } from '../services/admin-quiz.service';
   `,
   styles: [],
 })
-export class DashboardCategoryCardComponent {
-  canEdit = this.dashboardService.canEdit;
-  constructor(private dashboardService: DashboardService) {}
+export class DashboardCategoryCardComponent implements OnInit {
   @Input() category: string;
-  categoryChange(event: string) {}
+  public canEdit = this.dashboardService.canEdit;
+  private categorySubject = new BehaviorSubject<string>('');
+
+  constructor(private dashboardService: DashboardService) {
+    this.categorySubject.next(this.category);
+  }
+
+  ngOnInit(): void {
+    this.categorySubject.pipe(debounceTime(300)).subscribe(() => {
+      this.dashboardService.editCategory(this.category);
+    });
+  }
+
+  categoryChange(event: string) {
+    this.categorySubject.next(event);
+  }
 }

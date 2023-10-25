@@ -11,7 +11,7 @@ import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { AutocompleteComponent } from '../../shared/components/autocomplete.component';
 import { BehaviorSubject } from 'rxjs';
-import { DashboardService } from '../services/admin-quiz.service';
+import { DashboardService } from '../services/dashboard.service';
 import { ToggleComponent } from 'src/app/shared/components/toggle.component';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { Router } from '@angular/router';
@@ -31,7 +31,10 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
       ></app-autocomplete>
       <div class="flex items-center">
         <span class="mr-1">Edit Mode:</span>
-        <app-toggle (onToggle)="toggleEdit($event)"></app-toggle>
+        <app-toggle
+          (onToggle)="toggleEdit($event)"
+          [toggleValue]="canEdit"
+        ></app-toggle>
       </div>
       <button
         appButton
@@ -80,7 +83,7 @@ export class SideBarComponent {
     private spinner: SpinnerService
   ) {}
 
-  public quizes = this.dashboardService.getQuizes();
+  public quizes = this.dashboardService.getQuizList();
   public canEdit = this.dashboardService.canEdit;
   public hasBeenEdited = this.dashboardService.hasBeenEdited;
 

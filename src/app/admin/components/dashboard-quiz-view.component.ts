@@ -1,6 +1,6 @@
 import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardService } from '../services/admin-quiz.service';
+import { DashboardService } from '../services/dashboard.service';
 import { DashboardCategoryCardComponent } from './dashboard-category-card.component';
 import { DashboardQuestionsCardComponent } from './dashboard-questions-card.component';
 import { DashboardStoryCardComponent } from './dashboard-story-card.component';

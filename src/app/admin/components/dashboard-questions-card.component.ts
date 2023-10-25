@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { QuizItem } from 'src/app/shared/modals/quiz-item';
 import { CardComponent } from 'src/app/shared/components/card.component';
 import { DashboardQuestionRowComponent } from './dashboard-question-row.component';
-import { DashboardService } from '../services/admin-quiz.service';
+import { DashboardService } from '../services/dashboard.service';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { DialogService } from 'src/app/shared/services/dialog.service';
