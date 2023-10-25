@@ -11,10 +11,10 @@ import { GameService } from '../services/game.service';
   selector: 'app-action-bar',
   standalone: true,
   template: `
-    <div class=>
+    <div>
       <app-current-question-indicator></app-current-question-indicator>
       <app-button-clustor (submitQuiz)="onSubmit()"></app-button-clustor>
-      <app-answer-submitted *ngIf='submited()'></app-answer-submitted>
+      <app-answer-submitted *ngIf="submited()"></app-answer-submitted>
     </div>
   `,
   styles: [],

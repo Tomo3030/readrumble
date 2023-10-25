@@ -4,12 +4,10 @@ import { ClassroomService } from '../services/classroom.service';
 import { ToastService } from '../services/toast.service';
 
 export const classroomResolver: ResolveFn<boolean> = async (route, state) => {
-  console.log('classroomResolver');
   const classroomId = route.paramMap.get('classroomId');
   const classroomService = inject(ClassroomService);
   const router = inject(Router);
   const toast = inject(ToastService);
-
   if (!classroomId) throw new Error('Route data not available');
   let classroom = await classroomService.resolveClassroom(classroomId);
   console.log(classroom);
@@ -18,6 +16,5 @@ export const classroomResolver: ResolveFn<boolean> = async (route, state) => {
     router.navigate(['/']);
     toast.open('Route Does Not Exist');
     return null;
-    //throw new Error('Classroom not found');
   }
 };

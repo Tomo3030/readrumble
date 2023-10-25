@@ -16,15 +16,18 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-game-interface',
   standalone: true,
   template: `
-    <div *ngIf="quizForm | async as form" class="relative h-full">
-      <div class="m-4 flex gap-4 flex-col">
+    <div
+      *ngIf="quizForm | async as form"
+      class="relative h-full  max-w-2xl  m-auto flex  flex-col"
+    >
+      <div class="m-4  flex gap-4 flex-col ">
         <app-story-card [story]="story"></app-story-card>
         <app-question-card></app-question-card>
       </div>
-      <app-action-bar
-        class="fixed bottom-0 w-full bg-card"
-        (onSubmitQuiz)="submitQuiz()"
-      ></app-action-bar>
+      <div class="grow md:grow-0"></div>
+      <div class="md:m-4 bg-card md:rounded-md">
+        <app-action-bar (onSubmitQuiz)="submitQuiz()"></app-action-bar>
+      </div>
     </div>
   `,
   styles: [],
@@ -44,6 +47,7 @@ export class GameInterfaceComponent {
   ) {}
   @Input() story: Story;
   @Input() quizForm: Observable<FormArray<FormGroup>>;
+  //class="fixed bottom-0 w-full bg-card max-w-2xl"
 
   submitQuiz() {
     this.quizForm.pipe(take(1)).subscribe((quizForm) => {

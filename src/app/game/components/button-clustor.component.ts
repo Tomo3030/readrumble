@@ -26,7 +26,7 @@ import { map, switchMap } from 'rxjs';
       [disabled]="!(valid$ | async)"
       appButton
       appRipple
-      class="bg-primary"
+      class="bg-primary max-w-[300px]"
     >
       submit
     </button>
