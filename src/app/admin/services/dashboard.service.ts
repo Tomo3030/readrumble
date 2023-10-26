@@ -109,17 +109,16 @@ export class DashboardService {
     const category = quiz.category;
     const stories = quiz.stories.length;
     const items = quiz.items.length;
-    console.log(category, stories, items);
     if (!category || !stories || !items)
       return this.toast.open('Please fill out all fields');
-    console.log('lll');
     this.hasBeenEdited.update(() => false);
     this.canEdit.set(false);
     const isNewQuiz = this.currentQuizId === '';
-    //isNewQuiz ? this.saveNewQuiz(quiz) : this.saveEditedQuiz(quiz);
+    isNewQuiz ? this.saveNewQuiz(quiz) : this.saveEditedQuiz(quiz);
   }
 
   public toggleEdit() {
+    this.hasBeenEdited.update(() => false);
     this.canEdit.set(!this.canEdit());
   }
 
