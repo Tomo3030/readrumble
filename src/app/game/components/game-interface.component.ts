@@ -47,7 +47,6 @@ export class GameInterfaceComponent {
   ) {}
   @Input() story: Story;
   @Input() quizForm: Observable<FormArray<FormGroup>>;
-  //class="fixed bottom-0 w-full bg-card max-w-2xl"
 
   submitQuiz() {
     this.quizForm.pipe(take(1)).subscribe((quizForm) => {

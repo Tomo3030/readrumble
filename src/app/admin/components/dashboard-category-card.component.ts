@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from 'src/app/shared/components/card.component';
 import { DashboardService } from '../services/dashboard.service';
-import { BehaviorSubject, debounceTime, delay } from 'rxjs';
+import { BehaviorSubject, debounceTime, delay, filter, tap } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-category-card',
@@ -35,9 +35,14 @@ export class DashboardCategoryCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categorySubject.pipe(debounceTime(300)).subscribe(() => {
-      this.dashboardService.editCategory(this.category);
-    });
+    this.categorySubject
+      .pipe(
+        filter(() => this.canEdit()),
+        debounceTime(300)
+      )
+      .subscribe(() => {
+        this.dashboardService.editCategory(this.category);
+      });
   }
 
   categoryChange(event: string) {

@@ -13,12 +13,17 @@ import { Quiz } from 'src/app/shared/modals/quiz';
 import { QuizItem } from 'src/app/shared/modals/quiz-item';
 import { Story } from 'src/app/shared/modals/story';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ToastService } from 'src/app/shared/services/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
-  constructor(private fb: Firestore, private spinner: SpinnerService) {}
+  constructor(
+    private fb: Firestore,
+    private spinner: SpinnerService,
+    private toast: ToastService
+  ) {}
   public canEdit = signal(false);
   public hasBeenEdited = signal(false);
   public quizSignal = signal({
@@ -47,7 +52,7 @@ export class DashboardService {
     this.spinner.show();
     this.currentQuizId = id;
     this.canEdit.set(false);
-    //but strange button behavior
+    this.hasBeenEdited.set(false);
     let ref = doc(this.fb, 'quizzes', id);
     docData(ref)
       .pipe(first())
@@ -101,8 +106,17 @@ export class DashboardService {
 
   public async saveQuiz() {
     const quiz = this.quizSignal();
+    const category = quiz.category;
+    const stories = quiz.stories.length;
+    const items = quiz.items.length;
+    console.log(category, stories, items);
+    if (!category || !stories || !items)
+      return this.toast.open('Please fill out all fields');
+    console.log('lll');
+    this.hasBeenEdited.update(() => false);
+    this.canEdit.set(false);
     const isNewQuiz = this.currentQuizId === '';
-    isNewQuiz ? this.saveNewQuiz(quiz) : this.saveEditedQuiz(quiz);
+    //isNewQuiz ? this.saveNewQuiz(quiz) : this.saveEditedQuiz(quiz);
   }
 
   public toggleEdit() {
@@ -201,6 +215,7 @@ export class DashboardService {
   }
 
   public editQuestionText(index: number, question: string) {
+    console.log('edit question text');
     this.hasBeenEdited.update(() => true);
     let items = this.quizSignal().items;
     items[index].question = question;
@@ -211,6 +226,7 @@ export class DashboardService {
   }
 
   public deleteQuestion(index: number) {
+    console.log('delete question');
     this.hasBeenEdited.update(() => true);
     let items = this.quizSignal().items;
     items.splice(index, 1);
@@ -221,7 +237,6 @@ export class DashboardService {
   }
 
   private async saveNewQuiz(quiz: Quiz) {
-    console.log('new quiz');
     const ref = collection(this.fb, 'quizzes');
     const document = await addDoc(ref, quiz);
     return this.updateQuizList(document.id, quiz.category);
