@@ -22,6 +22,7 @@ import { Observable } from 'rxjs';
       [story]="story"
     ></app-game-interface>
     <app-score *ngIf="gameStatus() === 'gameOver'"></app-score>
+    <div>{{ game() }}</div>
   `,
   styles: [],
   imports: [
@@ -37,6 +38,8 @@ export class GamePageComponent implements OnDestroy {
   public quizForm;
   private sub: any;
 
+  public game = this.gameSerice.gameState;
+
   constructor(
     private dataAccess: GameDataAccessService,
     private activatedRoute: ActivatedRoute,
@@ -49,6 +52,7 @@ export class GamePageComponent implements OnDestroy {
     this.sub = this.dataAccess
       .initGameDataAccess(classroomId, gameId)
       .subscribe((data) => {
+        console.log(data);
         this.story = this.quizService.getMyStory();
         this.quizForm = this.quizService.quizForm$;
       });
