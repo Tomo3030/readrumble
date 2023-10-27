@@ -8,6 +8,7 @@ import { ScoreComponent } from '../components/score.component';
 import { GameService } from '../services/game.service';
 import { QuizService } from '../services/quiz.service';
 import { Observable } from 'rxjs';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-game-page',
@@ -22,7 +23,6 @@ import { Observable } from 'rxjs';
       [story]="story"
     ></app-game-interface>
     <app-score *ngIf="gameStatus() === 'gameOver'"></app-score>
-    <div>{{ game() }}</div>
   `,
   styles: [],
   imports: [
@@ -44,8 +44,10 @@ export class GamePageComponent implements OnDestroy {
     private dataAccess: GameDataAccessService,
     private activatedRoute: ActivatedRoute,
     private gameSerice: GameService,
-    private quizService: QuizService
+    private quizService: QuizService,
+    private spinner: SpinnerService
   ) {
+    this.spinner.show();
     const classroomId =
       this.activatedRoute.snapshot.paramMap.get('classroomId');
     const gameId = this.activatedRoute.snapshot.paramMap.get('gameId');
@@ -53,6 +55,7 @@ export class GamePageComponent implements OnDestroy {
       .initGameDataAccess(classroomId, gameId)
       .subscribe((data) => {
         console.log(data);
+        this.spinner.hide();
         this.story = this.quizService.getMyStory();
         this.quizForm = this.quizService.quizForm$;
       });
