@@ -24,17 +24,15 @@ import { ActivatedRoute } from '@angular/router';
   template: `
     <div
       *ngIf="quizForm | async as form"
-      class="relative h-full  max-w-2xl  m-auto flex  flex-col"
+      class="relative  max-w-2xl  m-4 flex gap-4  flex-col overflow-y-auto md:m-auto"
     >
-      <div class="m-4  flex gap-4 flex-col ">
-        <app-story-card [story]="story"></app-story-card>
-        <app-question-card></app-question-card>
-      </div>
-      <div
-        class="fixed bottom-0 left-0 w-full  md:relative md:bottom-auto md:right-auto md:m-4 md:w-auto bg-card md:rounded-md"
-      >
-        <app-action-bar (onSubmitQuiz)="submitQuiz()"></app-action-bar>
-      </div>
+      <app-story-card [story]="story"></app-story-card>
+      <app-question-card></app-question-card>
+    </div>
+    <div
+      class="fixed bottom-0 left-0 w-full  bg-card  md:relative md:bottom-auto md:right-auto  md:m-auto md:mt-4 md:max-w-2xl md:rounded-md md:p-4"
+    >
+      <app-action-bar (onSubmitQuiz)="submitQuiz()"></app-action-bar>
     </div>
   `,
   styles: [],
