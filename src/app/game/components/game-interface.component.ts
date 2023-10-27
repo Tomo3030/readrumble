@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Story } from 'src/app/shared/modals/story';
 import { Observable, take } from 'rxjs';
@@ -24,8 +30,9 @@ import { ActivatedRoute } from '@angular/router';
         <app-story-card [story]="story"></app-story-card>
         <app-question-card></app-question-card>
       </div>
-      <div class="grow md:grow-0"></div>
-      <div class="md:m-4 bg-card md:rounded-md">
+      <div
+        class="fixed bottom-0 left-0 w-full  md:relative md:bottom-auto md:right-auto md:m-4 md:w-auto bg-card md:rounded-md"
+      >
         <app-action-bar (onSubmitQuiz)="submitQuiz()"></app-action-bar>
       </div>
     </div>
