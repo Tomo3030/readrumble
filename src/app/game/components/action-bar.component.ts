@@ -14,7 +14,10 @@ import { GameService } from '../services/game.service';
     <div>
       <app-current-question-indicator></app-current-question-indicator>
       <app-button-clustor (submitQuiz)="onSubmit()"></app-button-clustor>
-      <app-answer-submitted *ngIf="submited()"></app-answer-submitted>
+      <app-answer-submitted
+        *ngIf="submited()"
+        (expanded)="onExpanded()"
+      ></app-answer-submitted>
     </div>
   `,
   styles: [],
@@ -27,9 +30,15 @@ import { GameService } from '../services/game.service';
 })
 export class ActionBarComponent {
   @Output() onSubmitQuiz = new EventEmitter();
+  @Output() expanded = new EventEmitter();
+
   submited = this.game.answerSubmitted;
   constructor(private game: GameService) {}
   onSubmit() {
     this.onSubmitQuiz.emit();
+  }
+
+  onExpanded() {
+    this.expanded.emit();
   }
 }

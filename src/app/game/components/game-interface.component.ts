@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -24,15 +25,20 @@ import { ActivatedRoute } from '@angular/router';
   template: `
     <div
       *ngIf="quizForm | async as form"
-      class="relative  max-w-2xl  m-4 flex gap-4  flex-col overflow-y-auto md:m-auto"
+      [style.paddingBottom.px]="actionBarHeight"
+      class="relative  max-w-2xl  m-4 flex gap-4  flex-col overflow-y-auto md:m-auto md:mt-4"
     >
       <app-story-card [story]="story"></app-story-card>
       <app-question-card></app-question-card>
     </div>
     <div
+      #actionBar
       class="fixed bottom-0 left-0 w-full  bg-card  md:relative md:bottom-auto md:right-auto  md:m-auto md:mt-4 md:max-w-2xl md:rounded-md md:p-4"
     >
-      <app-action-bar (onSubmitQuiz)="submitQuiz()"></app-action-bar>
+      <app-action-bar
+        (onSubmitQuiz)="submitQuiz()"
+        (expanded)="setActionBarHeight()"
+      ></app-action-bar>
     </div>
   `,
   styles: [],
@@ -44,14 +50,21 @@ import { ActivatedRoute } from '@angular/router';
     ActionBarComponent,
   ],
 })
-export class GameInterfaceComponent {
+export class GameInterfaceComponent implements AfterViewInit {
   constructor(
     private quizService: QuizService,
     private data: GameDataAccessService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
+  ngAfterViewInit(): void {
+    this.setActionBarHeight();
+  }
   @Input() story: Story;
   @Input() quizForm: Observable<FormArray<FormGroup>>;
+  @ViewChild('actionBar') actionBar: ElementRef;
+  windowSize: number = window.innerWidth;
+  public actionBarHeight: number = 0;
 
   submitQuiz() {
     this.quizForm.pipe(take(1)).subscribe((quizForm) => {
@@ -59,5 +72,13 @@ export class GameInterfaceComponent {
       const classroomId = this.route.snapshot.paramMap.get('classroomId');
       this.data.postQuizResults(classroomId, correctedQuiz);
     });
+  }
+
+  public setActionBarHeight() {
+    if (this.windowSize > 768) return;
+    this.actionBarHeight = this.actionBar
+      ? this.actionBar.nativeElement.offsetHeight + 10
+      : 0;
+    this.cdr.detectChanges();
   }
 }

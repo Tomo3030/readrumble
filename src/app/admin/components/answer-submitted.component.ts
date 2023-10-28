@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from '../../shared/components/loader.component';
 
@@ -14,4 +14,9 @@ import { LoaderComponent } from '../../shared/components/loader.component';
   styles: [],
   imports: [CommonModule, LoaderComponent],
 })
-export class AnswerSubmittedComponent {}
+export class AnswerSubmittedComponent implements AfterViewInit {
+  @Output() expanded = new EventEmitter();
+  ngAfterViewInit(): void {
+    this.expanded.emit();
+  }
+}
