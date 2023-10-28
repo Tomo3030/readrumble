@@ -20,6 +20,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
       >
         <app-card class=" max-w-[400px] m-auto">
           <div content>
+            <img src="assets/logos/fist.svg" alt="" class=" max-h-24 m-auto" />
             <h1 class="text-center font-bold text-2xl mb-6">
               Sign In To ReadRumble
             </h1>

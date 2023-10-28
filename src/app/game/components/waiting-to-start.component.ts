@@ -38,5 +38,6 @@ import { LoaderComponent } from '../../shared/components/loader.component';
 })
 export class WaitingToStartComponent {
   public gameState = this.game.gameState;
+
   constructor(private game: GameService) {}
 }

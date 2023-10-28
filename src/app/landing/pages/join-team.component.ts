@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamSelectComponent } from '../components/team-select.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Team } from 'src/app/shared/modals/team';
 import { JoinTeamCardComponent } from '../components/join-team-card.component';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
@@ -57,8 +57,13 @@ export class JoinTeamComponent {
     private activatedRoute: ActivatedRoute,
     private teamService: TeamService
   ) {
+    this.spinner.show();
     const classroomId = this.route.snapshot.paramMap.get('classroomId');
-    this.teamData$ = this.teamService.getClassroomTeams(classroomId);
+    this.teamData$ = this.teamService.getClassroomTeams(classroomId).pipe(
+      tap((team) => {
+        if (team.length) this.spinner.hide();
+      })
+    );
   }
 
   setCurrentTeam(team: Team) {
