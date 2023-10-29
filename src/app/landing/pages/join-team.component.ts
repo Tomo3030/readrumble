@@ -68,6 +68,7 @@ export class JoinTeamComponent {
 
   setCurrentTeam(team: Team) {
     this.currentTeam = team;
+    console.log(this.currentTeam);
   }
 
   joinTeam() {

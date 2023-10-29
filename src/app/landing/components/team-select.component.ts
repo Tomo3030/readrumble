@@ -54,10 +54,12 @@ export class TeamSelectComponent {
   nextSlide() {
     if (this.currentSlide >= this.carItems.length - 1) this.currentSlide = 0;
     else this.currentSlide++;
+    this.slideChange.emit(this.carItems[this.currentSlide]);
   }
 
   prevSlide() {
     if (this.currentSlide === 0) this.currentSlide = this.carItems.length - 1;
     else this.currentSlide--;
+    this.slideChange.emit(this.carItems[this.currentSlide]);
   }
 }
