@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, signal } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuizService } from '../services/quiz.service';
 

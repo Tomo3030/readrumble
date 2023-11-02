@@ -1,5 +1,5 @@
-import { Inject, Injectable, ViewContainerRef, inject } from '@angular/core';
-import { AnchorDirective } from '../directives/anchor.directive';
+import { Injectable, ViewContainerRef, inject } from '@angular/core';
+
 import { ToastComponent } from '../components/toast.component';
 import { AnchorService } from './anchor.service';
 

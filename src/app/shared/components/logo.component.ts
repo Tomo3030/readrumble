@@ -5,7 +5,11 @@ import { CommonModule } from '@angular/common';
   selector: 'app-logo',
   standalone: true,
   imports: [CommonModule],
-  template: ` <img class="w-full" src="./assets/logos/logo.svg" alt="" />`,
+  template: ` <img
+    class="w-[352px] h-[184px]"
+    src="./assets/logos/logo.svg"
+    alt=""
+  />`,
   styles: [],
 })
 export class LogoComponent {}

@@ -7,8 +7,8 @@ import {
   orderBy,
   query,
 } from '@angular/fire/firestore';
-import { doc, getDoc, where } from 'firebase/firestore';
-import { DocumentData } from 'rxfire/firestore/interfaces';
+import { where } from 'firebase/firestore';
+
 import { QuizService } from 'src/app/game/services/quiz.service';
 
 @Injectable({

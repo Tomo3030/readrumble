@@ -6,13 +6,6 @@ import { CardComponent } from '../../shared/components/card.component';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/shared/services/toast.service';
-import {
-  Firestore,
-  collection,
-  collectionData,
-  doc,
-  getDoc,
-} from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { shake } from 'src/app/animations/shake';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';

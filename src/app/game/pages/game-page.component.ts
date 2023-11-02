@@ -7,7 +7,6 @@ import { GameInterfaceComponent } from '../components/game-interface.component';
 import { ScoreComponent } from '../components/score.component';
 import { GameService } from '../services/game.service';
 import { QuizService } from '../services/quiz.service';
-import { Observable } from 'rxjs';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({

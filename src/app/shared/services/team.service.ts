@@ -1,15 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImgMapService } from './img-map.service';
-import {
-  BehaviorSubject,
-  Observable,
-  combineLatest,
-  from,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, of, tap } from 'rxjs';
 import {
   arrayUnion,
   collection,

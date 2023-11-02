@@ -6,7 +6,6 @@ import { JoinTeamCardComponent } from 'src/app/landing/components/join-team-card
 import { Observable } from 'rxjs';
 import { Team } from 'src/app/shared/modals/team';
 import { AddTeamCardComponent } from '../components/add-team-card.component';
-import { teamMap } from 'src/app/shared/img-maps/team-imgs';
 import { TeamService } from 'src/app/shared/services/team.service';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';

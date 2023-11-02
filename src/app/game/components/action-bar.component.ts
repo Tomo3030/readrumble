@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurrentQuestionIndicatorComponent } from './current-question-indicator.component';
 import { ButtonClustorComponent } from './button-clustor.component';
-import { Observable } from 'rxjs';
-import { FormArray, FormGroup } from '@angular/forms';
+
 import { AnswerSubmittedComponent } from '../../admin/components/answer-submitted.component';
 import { GameService } from '../services/game.service';
 

@@ -1,19 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatusCardComponent } from '../components/status-card.component';
-import { TeamService } from 'src/app/shared/services/team.service';
 import { ActivatedRoute } from '@angular/router';
-import {
-  BehaviorSubject,
-  Observable,
-  combineLatest,
-  map,
-  of,
-  switchMap,
-  tap,
-  timer,
-} from 'rxjs';
-import { Team } from 'src/app/shared/modals/team';
+import { Observable } from 'rxjs';
 import { ButtonDirective } from 'src/app/shared/directives/button.directive';
 import { RippleDirective } from 'src/app/shared/directives/ripple.directive';
 import { StatusService } from '../services/status.service';

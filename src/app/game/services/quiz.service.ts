@@ -1,7 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { GameDataAccessService } from './game-data-access.service';
-import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Quiz } from 'src/app/shared/modals/quiz';
 import { Story } from 'src/app/shared/modals/story';
 import {
